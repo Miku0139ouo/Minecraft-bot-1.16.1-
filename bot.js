@@ -1,8 +1,6 @@
 const mineflayer = require("mineflayer")
 const tokens = require('prismarine-tokens-fixed')
 const config = require(`./config.json`);
-const tpsPlugin = require('mineflayer-tps')(mineflayer)
-const {Vec3} = require("vec3")
 const loginOpts = {   //登入版本
     host: config.address,
     port: config.port,
@@ -21,20 +19,13 @@ const rl = readline.createInterface({
 async function connects() {
     tokens.use(loginOpts, function (_err, _opts) {
         const bot = mineflayer.createBot(_opts);
-        bot.loadPlugin(tpsPlugin);
         const ChatMessage = require("prismarine-chat")(bot.version)  //自動偵測訊息版本
         bot.on("message", async function (jsonMsg) {
-            const whitelist =["Minecraft ID","123","Miku_probot"]
+            const whitelist = config.whitelist
             const message = new ChatMessage(jsonMsg)
-            const msg = new webhook.MessageBuilder()
-                .setText(`[${bot.username}:]`+message.toString())
-                .setAvatar(
-                    `https://cravatar.eu/helmavatar/${bot.username}/190.png`
-                )
-                .setName(`${bot.username}`)
             const health = /目標生命 \: ❤❤❤❤❤❤❤❤❤❤ \/ ([\S]+)/g.exec(message.toString()) //忽略系統的目標生命
             if(health){
-                console.log(`偵測到系統訊息`)
+                //console.log(`偵測到系統訊息`)
             }else {
                 console.log(message.toAnsi())
             }
@@ -91,7 +82,7 @@ async function connects() {
             })
         })
         bot.on("end",()=>{
-            connects() //重連 ,discord bot 中斷登入狀態
+            connects() //重連
         })
         bot.on("death",async function (){
             setTimeout(function (){
