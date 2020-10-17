@@ -54,7 +54,6 @@ async function connects() {
                 let lo = dec[2].split(`]`)//
                 let playerid = dec.splice(lo.length)[0].split("]") //Minecraft ID
                 let msg = jsonMsg.toString().slice(18 + playerid.length).split(" ")
-                //msg[1]
                 //  if (playerid[0] === bot.username) return;
                 if (whitelist.includes(`${playerid[0]}`)) {
                     switch (msg[1]) {
@@ -64,27 +63,86 @@ async function connects() {
                         case "back":
                             bot.chat(`/back`)
                             break
-                        case "cmd":
-                            let cmd = msg.join(" ").slice(msg.length - msg[1].length - 3)
-                            bot.chat(cmd)
+                        case "throwall":
+                            for (let i = 9; i <= 45; i++) {
+                                bot._client.write("window_click", {
+                                    windowId: 0,
+                                    slot: i,
+                                    mouseButton: 1,
+                                    action: 1,
+                                    mode: 4,
+                                    item: 0
+                                })
+                            }
                             break
+                        case "exp":
+                            let exp = Math.round(bot.experience.progress * 100)
+                            bot.chat(`/m ${playerid[0]} 等級: ${bot.experience.level} , 經驗值: ${bot.experience.points}  經驗值百分比: ${exp}%`)
+                            break
+                        case "throw":
+                            if (msg[2] !== undefined) {
+                                if (!isNaN(msg[2])) {
+                                    if (msg[2] >= 9 ) {
+                                        if(msg[2] <= 45) {
+                                            bot._client.write("window_click", {
+                                                windowId: 0,
+                                                slot: msg[2],
+                                                mouseButton: 1,
+                                                action: 1,
+                                                mode: 4,
+                                                item: 0
+                                            })
+                                        }else {
+                                            bot.chat(`/m ${playerid[0]} 數字 9 -45`)
+                                        }
+                                    }else {
+                                        bot.chat(`/m ${playerid[0]} 數字 9 -45`)
+                                    }
+                                } else {
+                                    bot.chat(`/m ${playerid[0]} 請輸入有效數字`)
+                                    return;
+                                }
+                            }
+                            break
+                        case "cmd":
+                            if (msg[2]) {
+                                let chats =msg.join(" ").replace(msg[1],"")
+                                bot.chat(chats)
+                                break
+                            }
+
                     }
-                }
+                 }
             }
         })
         bot.once("login",()=>{
             rl.on('line', function (line) {
                 bot.chat(line)
             })
+            setTimeout(function (){ //fly_toggle
+                fly_toggle(false)
+            },5000)
         })
         bot.on("end",()=>{
             connects() //重連
+        })
+        bot.on("kicked", function (reason, loggedIn) {
+            console.log(`Kicked Reason: ${reason}. \nLogged In?: ${loggedIn}.`)
         })
         bot.on("death",async function (){
             setTimeout(function (){
                 bot.chat(`/back`)
             },3000)
         })
+        function fly_toggle(fly) {
+            let flag;
+            if (fly)
+                flag = 2
+            else flag = 0
+            bot._client.write("abilities", {
+                flags: flag
+            })
+        }
     })
 }
 connects()  //登入
