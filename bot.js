@@ -73,10 +73,6 @@ async function connects() {
             }
         })
         bot.once("login",()=>{
-            setTimeout(function () {
-                bot.creative.flyTo(bot.entity.position.offset(1, 0, 0))//升高0.01格
-                bot.chat(`/spawn`)
-            }, 3000)
             rl.on('line', function (line) {
                 bot.chat(line)
             })
