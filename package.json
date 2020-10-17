@@ -1,0 +1,16 @@
+{
+  "name": "tutorial",
+  "version": "1.0.0",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "mineflayer": "^2.31.0",
+    "mojang-api": "0.0.2",
+    "prismarine-chat": "^1.0.2",
+    "webhook-discord": "^3.7.7"
+  },
+  "devDependencies": {
+    "mineflayer-tps": "^1.0.1",
+    "prismarine-tokens-fixed": "^1.1.2",
+    "vec3": "^0.1.7"
+  }
+}

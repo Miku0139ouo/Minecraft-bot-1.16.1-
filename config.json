@@ -1,0 +1,7 @@
+{
+  "address": "jp.mcfallout.net",
+  "port":25565,
+  "whitelist":["345","123","Minecraft ID123","fuck you"],
+  "username": "youremail",
+  "password": "yourpassword",
+}
