@@ -64,6 +64,10 @@ async function connects() {
                             case "back":
                                 bot.chat(`/back`)
                                 break
+                            case "discord":
+                                bot.chat(`/m ${playerid[0]} 已開啓Discord 聯動`)
+                                discord()
+                                break
                             case "throwall":
                                 for (let i = 9; i <= 46; i++) {
                                     bot._client.write("window_click", {
@@ -145,6 +149,36 @@ async function connects() {
             else flag = 0
             bot._client.write("abilities", {
                 flags: flag
+            })
+        }
+        function discord(){
+            const Discord =require("discord.js")
+            const client = new Discord.client();
+            client.login(config.token) //請自行輸入你的Discord bot token
+            client.on("message",msg=>{
+                if(msg.author.bot||!msg.startsWith(config.prefix))return;
+                const args = msg.content
+                    .slice(config.prefix.length)
+                    .trim()
+                    .split(/ +/g);
+                const command = args.shift().toLowerCase();
+                const mss = args.join(" ").trim()
+                if(command === `send`){
+                    bot.chat(`${mss}`)
+                }
+            })
+            bot.on("message", async function (jsonMsg) {
+                const webhook = require("webhook-discord")
+                const Hook = new webhook.Webhook(config.webhook) //請自行輸入自己的webhook 網址
+                const health = /目標生命 \: ❤❤❤❤❤❤❤❤❤❤ \/ ([\S]+)/g.exec(jsonMsg.toString()) //忽略系統的目標生命
+                if(health){
+                    return
+                }else {
+                    const msg = new webhook.MessageBuilder()
+                        .setName(`${bot.username}`)
+                        .setText(`[機器人 ${bot.username}:]${jsonMsg.toString()}`)
+                    Hook.send(msg) //webhook 内容
+                }
             })
         }
     })
