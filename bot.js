@@ -17,17 +17,15 @@ const rl = readline.createInterface({
     terminal: false
 });
 async function connects() {
-    tokens.use(loginOpts, function (_err, _opts) {
+    tokens.use(loginOpts, function (_err, _opts) { //使用驗證暫存
         const bot = mineflayer.createBot(_opts);
-        const ChatMessage = require("prismarine-chat")(bot.version)  //自動偵測訊息版本
         bot.on("message", async function (jsonMsg) {
             const whitelist = config.whitelist
-            const message = new ChatMessage(jsonMsg)
-            const health = /目標生命 \: ❤❤❤❤❤❤❤❤❤❤ \/ ([\S]+)/g.exec(message.toString()) //忽略系統的目標生命
+            const health = /目標生命 \: ❤❤❤❤❤❤❤❤❤❤ \/ ([\S]+)/g.exec(jsonMsg.toString()) //忽略系統的目標生命
             if(health){
                 //console.log(`偵測到系統訊息`)
             }else {
-                console.log(message.toAnsi())
+                console.log(sonMsg.toAnsi())
             }
             if (jsonMsg.toString().startsWith(`[廢土伺服] :`) &&
                 jsonMsg.toString().toLowerCase().includes(`想要你傳送到 該玩家 的位置!`)){ //切訊息
