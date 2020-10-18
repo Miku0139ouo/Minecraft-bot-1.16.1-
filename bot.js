@@ -10,7 +10,7 @@ const loginOpts = {   //登入版本
     tokensDebug: true,
     version: "1.16.1"
 }
-const readline = require('readline');
+const readline = require('readline'); 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -25,7 +25,7 @@ async function connects() {
             if(health){
                 //console.log(`偵測到系統訊息`)
             }else {
-                console.log(sonMsg.toAnsi())
+                console.log(jsonMsg.toAnsi())
             }
             if (jsonMsg.toString().startsWith(`[廢土伺服] :`) &&
                 jsonMsg.toString().toLowerCase().includes(`想要你傳送到 該玩家 的位置!`)){ //切訊息
