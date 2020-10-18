@@ -4,4 +4,7 @@
   "whitelist":["345","123","Minecraft ID123","fuck you"],
   "username": "youremail",
   "password": "yourpassword",
+  "prefix": "!",
+  "webhook": "12314",
+  "token":"114314"
 }
