@@ -54,65 +54,69 @@ async function connects() {
                 let lo = dec[2].split(`]`)//
                 let playerid = dec.splice(lo.length)[0].split("]") //Minecraft ID
                 let msg = jsonMsg.toString().slice(18 + playerid.length).split(" ")
-                //  if (playerid[0] === bot.username) return;
-                if (whitelist.includes(`${playerid[0]}`)) {
-                    switch (msg[1]) {
-                        case "spawn":
-                            bot.chat(`/spawn`)
-                            break
-                        case "back":
-                            bot.chat(`/back`)
-                            break
-                        case "throwall":
-                            for (let i = 9; i <= 45; i++) {
-                                bot._client.write("window_click", {
-                                    windowId: 0,
-                                    slot: i,
-                                    mouseButton: 1,
-                                    action: 1,
-                                    mode: 4,
-                                    item: 0
-                                })
-                            }
-                            break
-                        case "exp":
-                            let exp = Math.round(bot.experience.progress * 100)
-                            bot.chat(`/m ${playerid[0]} 等級: ${bot.experience.level} , 經驗值: ${bot.experience.points}  經驗值百分比: ${exp}%`)
-                            break
-                        case "throw":
-                            if (msg[2] !== undefined) {
-                                if (!isNaN(msg[2])) {
-                                    if (msg[2] >= 9 ) {
-                                        if(msg[2] <= 45) {
-                                            bot._client.write("window_click", {
-                                                windowId: 0,
-                                                slot: msg[2],
-                                                mouseButton: 1,
-                                                action: 1,
-                                                mode: 4,
-                                                item: 0
-                                            })
-                                        }else {
-                                            bot.chat(`/m ${playerid[0]} 數字 9 -45`)
-                                        }
-                                    }else {
-                                        bot.chat(`/m ${playerid[0]} 數字 9 -45`)
-                                    }
-                                } else {
-                                    bot.chat(`/m ${playerid[0]} 請輸入有效數字`)
-                                    return;
-                                }
-                            }
-                            break
-                        case "cmd":
-                            if (msg[2]) {
-                                let chats =msg.join(" ").replace(msg[1],"")
-                                bot.chat(chats)
+                 if (playerid[0] === bot.username) return;
+                    if (whitelist.includes(`${playerid[0]}`)) {
+                        if (msg[1]) {
+                        switch (msg[1]) {
+                            case "spawn":
+                                bot.chat(`/spawn`)
                                 break
-                            }
+                            case "back":
+                                bot.chat(`/back`)
+                                break
+                            case "throwall":
+                                for (let i = 9; i <= 46; i++) {
+                                    bot._client.write("window_click", {
+                                        windowId: 0,
+                                        slot: i,
+                                        mouseButton: 1,
+                                        action: 1,
+                                        mode: 4,
+                                        item: 0
+                                    })
+                                }
+                                break
+                            case "exp":
+                                let exp = Math.round(bot.experience.progress * 100)
+                                bot.chat(`/m ${playerid[0]} 等級: ${bot.experience.level} , 經驗值: ${bot.experience.points}  經驗值百分比: ${exp}%`)
+                                break
+                            case "throw":
+                                if (msg[2] !== undefined) {
+                                    if (!isNaN(msg[2])) {
+                                        if (msg[2] >= 9) {
+                                            if (msg[2] <= 46) {
+                                                bot._client.write("window_click", {
+                                                    windowId: 0,
+                                                    slot: msg[2],
+                                                    mouseButton: 1,
+                                                    action: 1,
+                                                    mode: 4,
+                                                    item: 0
+                                                })
+                                            } else {
+                                                bot.chat(`/m ${playerid[0]} 數字 9-45`)
+                                            }
+                                        } else {
+                                            bot.chat(`/m ${playerid[0]} 數字 9-45`)
+                                        }
+                                    } else {
+                                        bot.chat(`/m ${playerid[0]} 請輸入有效數字 而並非 ${msg[2]}`)
+                                        return;
+                                    }
+                                }
+                                break
+                            case "cmd":
+                                if (msg[2]) {
+                                    let chats = msg.join(" ").replace(msg[1], "")
+                                    bot.chat(chats)
+                                    break
+                                }
 
+                        }
                     }
-                 }
+                }else {
+                        bot.chat(`/m ${playerid[0]} 你沒有權限使用 ${msg[1]} 指令`)
+                    }
             }
         })
         bot.once("login",()=>{
